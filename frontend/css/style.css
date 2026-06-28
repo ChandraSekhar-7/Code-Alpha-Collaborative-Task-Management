@@ -1,0 +1,325 @@
+:root {
+  --primary: #4f46e5;
+  --secondary: #64748b;
+  --success: #10b981;
+  --danger: #ef4444;
+  --dark: #0f172a;
+  --light: #f8fafc;
+  --gray: #e2e8f0;
+}
+
+body { font-family: system-ui, -apple-system, sans-serif; background: #f1f5f9; margin: 0; padding: 0; color: var(--dark); }
+header { background: var(--dark); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; }
+
+.main-wrapper { min-height: calc(100vh - 70px); display: flex; }
+.center-box { margin: auto; padding: 2rem; width: 100%; max-width: 420px; }
+.form-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); border: 1px solid var(--gray); }
+
+/* Custom Auth Tab Navigation */
+.auth-tabs { display: flex; border-bottom: 2px solid var(--gray); margin-bottom: 1.5rem; gap: 0.5rem; }
+.tab-btn { flex: 1; background: none; border: none; padding: 0.75rem; cursor: pointer; font-weight: 600; color: var(--secondary); font-size: 0.95rem; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.input-group input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid var(--gray); border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; background: var(--light); transition: border 0.2s; }
+.input-group input:focus { border-color: var(--primary); outline: none; background: white; }
+.actions { display: flex; gap: 1rem; }
+
+.btn { border: none; padding: 0.65rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+.btn-block { width: 100%; display: block; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: var(--secondary); color: white; }
+.btn-success { background: var(--success); color: white; }
+.btn-danger { background: var(--danger); color: white; }
+
+/* Dashboard Management Styles */
+.app-grid { display: flex; width: 100%; }
+.sidebar { width: 300px; background: white; border-right: 1px solid var(--gray); padding: 1.5rem; box-sizing: border-box; }
+.board-container { flex: 1; padding: 2rem; overflow-x: auto; }
+.section-title { font-weight: 700; text-transform: uppercase; color: var(--secondary); font-size: 0.8rem; margin-bottom: 1rem; }
+
+.proj-form input { width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--gray); border-radius: 4px; }
+#project-navigation-list { list-style: none; padding: 0; margin: 0; }
+#project-navigation-list li { padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; margin-bottom: 0.5rem; transition: background 0.2s; background: var(--light); font-weight: 500; border-left: 3px solid transparent; }
+#project-navigation-list li:hover { background: var(--gray); }
+#project-navigation-list li.demo-badge { border-left-color: var(--secondary); background: #f0f4f8; font-style: italic; color: #475569; }
+
+.empty-state { text-align: center; color: var(--secondary); margin-top: 10%; }
+.task-generator { background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--gray); display: flex; gap: 0.75rem; margin-top: 1rem; align-items: center; }
+.task-generator input { padding: 0.5rem; border: 1px solid var(--gray); border-radius: 4px; flex: 1; }
+
+.kanban-grid { display: flex; gap: 1.5rem; margin-top: 2rem; align-items: flex-start; }
+.kanban-col { flex: 1; background: #f8fafc; border: 1px solid var(--gray); border-radius: 8px; min-width: 280px; min-height: 600px; }
+.lane-header { padding: 0.75rem 1rem; font-weight: 700; border-radius: 8px 8px 0 0; color: white; }
+.lane-header.todo { background: var(--secondary); }
+.lane-header.progress { background: var(--primary); }
+.lane-header.done { background: var(--success); }
+.task-stack { padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+
+.task-card { background: white; border: 1px solid var(--gray); padding: 1.25rem; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.task-card h4 { margin: 0 0 0.5rem 0; font-size: 1.05rem; }
+.task-card p { font-size: 0.9rem; color: #475569; margin: 0 0 0.75rem 0; }
+.task-card select { width: 100%; padding: 0.4rem; border-radius: 4px; border: 1px solid var(--gray); background: var(--light); font-weight: 600; }
+
+.comment-block { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--gray); }
+.comment-list { font-size: 0.8rem; color: #475569; max-height: 120px; overflow-y: auto; margin-bottom: 0.5rem; }
+.comment-input { width: 100%; padding: 0.4rem; border: 1px solid var(--gray); border-radius: 4px; font-size: 0.85rem; }
+/* --- UPDATED STRUCTURAL GRID --- */
+.app-grid { 
+  display: flex; 
+  width: 100vw; 
+  min-height: calc(100vh - 70px); 
+  overflow-x: hidden; 
+}
+
+/* Base style rule shared by BOTH sidebars */
+.sidebar { 
+  width: 280px; 
+  min-width: 280px; 
+  background: white; 
+  padding: 1.5rem; 
+  box-sizing: border-box; 
+}
+
+.left-sidebar { 
+  border-right: 1px solid var(--gray); 
+}
+
+.right-sidebar { 
+  border-left: 1px solid var(--gray); 
+  display: flex; /* Forces the flex-direction system to initialize correctly */
+  flex-direction: column; 
+}
+
+/* Center workspace stretches to use all remaining browser space */
+.board-container { 
+  flex: 1; 
+  padding: 2rem; 
+  overflow-x: auto; 
+  background: #f1f5f9; 
+}
+
+/* Sidebar lists & feed cards layout alignment */
+.sidebar-list { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.sidebar-list li { 
+  padding: 0.6rem 0.8rem; 
+  background: var(--light); 
+  border-radius: 6px; 
+  margin-bottom: 0.5rem; 
+  font-size: 0.85rem; 
+  border-left: 3px solid var(--primary); 
+  font-weight: 500; 
+}
+
+.activity-feed { 
+  flex: 1; 
+  overflow-y: auto; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.75rem; 
+  max-height: 400px; 
+}
+
+.activity-card { 
+  background: var(--light); 
+  padding: 0.75rem; 
+  border-radius: 6px; 
+  font-size: 0.8rem; 
+  border-left: 3px solid var(--success); 
+  line-height: 1.4; 
+}
+
+.activity-card .meta-task { 
+  font-size: 0.7rem; 
+  color: var(--secondary); 
+  display: block; 
+  margin-top: 0.25rem; 
+  font-style: italic; 
+}
+/* --- SPECIALIZED MODAL LAYER SYSTEM --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal-card { background: white; width: 100%; max-width: 500px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); overflow: hidden; border: 1px solid var(--gray); animation: modalSlide 0.2s ease-out; }
+@keyframes modalSlide { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-header { padding: 1.25rem 1.5rem; background: var(--dark); color: white; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { margin: 0; font-size: 1.1rem; }
+.close-modal-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; opacity: 0.8; }
+.close-modal-btn:hover { opacity: 1; }
+.modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.setting-row { display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 0.95rem; }
+.setting-row select { padding: 0.5rem; border-radius: 6px; border: 1px solid var(--gray); background: var(--light); font-weight: 600; width: 200px; }
+.modal-footer { padding: 1rem 1.5rem; background: var(--light); border-top: 1px solid var(--gray); display: flex; justify-content: flex-end; }
+
+/* --- COMPACT LAYOUT ENGINE PREFERENCE --- */
+body.compact-mode .task-card { padding: 0.75rem; }
+body.compact-mode .task-card p { margin-bottom: 0.4rem; font-size: 0.8rem; }
+body.compact-mode .comment-block { margin-top: 0.4rem; }
+/* --- 🌗 FULL-COVERAGE OBSIDIAN DARK THEME ENGINE --- */
+body.dark-theme { 
+  background: #0b0f19 !important; 
+  color: #ffffff !important; 
+}
+
+body.dark-theme header { 
+  background: #1e293b !important; 
+  border-bottom: 1px solid #334155 !important; 
+}
+
+/* Sidebars alignment colors text corrections */
+body.dark-theme .sidebar,
+body.dark-theme .left-sidebar,
+body.dark-theme .right-sidebar,
+body.dark-theme aside { 
+  background: #111827 !important; 
+  border-color: #1f2937 !important; 
+  color: #ffffff !important; 
+}
+
+body.dark-theme .section-title {
+  color: #94a3b8 !important;
+}
+
+body.dark-theme #project-navigation-list li { 
+  background: #1f2937 !important; 
+  color: #ffffff !important; 
+}
+body.dark-theme #project-navigation-list li:hover { 
+  background: #374151 !important; 
+}
+
+/* Kanban canvas and structural card changes */
+body.dark-theme .board-container {
+  background: #0f172a !important;
+}
+
+body.dark-theme .kanban-col { 
+  background: #111827 !important; 
+  border-color: #1f2937 !important; 
+}
+
+body.dark-theme .form-card, 
+body.dark-theme .task-card, 
+body.dark-theme .modal-card,
+body.dark-theme .task-generator { 
+  background: #1f2937 !important; 
+  border-color: #374151 !important; 
+  color: #ffffff !important; 
+}
+
+/* ENFORCE ABSOLUTE WHITE TEXT ACCROSS EVERY TARGETED ELEMENT IN DARK MODE */
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme h5,
+body.dark-theme h6,
+body.dark-theme label,
+body.dark-theme span,
+body.dark-theme li,
+body.dark-theme strong,
+body.dark-theme p,
+body.dark-theme small,
+body.dark-theme div { 
+  color: #ffffff !important; 
+}
+
+/* Soft contrast for subtle text layers */
+body.dark-theme .task-card p,
+body.dark-theme .meta-task {
+  color: #cbd5e1 !important;
+}
+
+/* Input entry fields adjustments */
+body.dark-theme .input-group input, 
+body.dark-theme .proj-form input, 
+body.dark-theme .task-generator input, 
+body.dark-theme .comment-input { 
+  background: #111827 !important; 
+  color: #ffffff !important; 
+  border-color: #374151 !important; 
+}
+body.dark-theme .input-group input::placeholder, 
+body.dark-theme .proj-form input::placeholder, 
+body.dark-theme .task-generator input::placeholder, 
+body.dark-theme .comment-input::placeholder {
+  color: #64748b !important;
+}
+
+/* List directories and feed stream highlights */
+body.dark-theme .sidebar-list li { 
+  background: #1f2937 !important; 
+  color: #ffffff !important; 
+}
+body.dark-theme .activity-card { 
+  background: #1f2937 !important; 
+  color: #ffffff !important; 
+}
+
+/* Specialized Select options dropdown override */
+body.dark-theme select,
+body.dark-theme .task-card select, 
+body.dark-theme .setting-row select { 
+  background: #111827 !important; 
+  color: #ffffff !important; 
+  border-color: #374151 !important; 
+}
+
+body.dark-theme .modal-header { background: #334155 !important; }
+body.dark-theme .modal-footer { background: #111827 !important; border-color: #374151 !important; }
+body.dark-theme hr { border-color: #374151 !important; }
+/* Ensure the diagnostic readouts box matches dark mode styles cleanly */
+body.dark-theme #diagnostic-box {
+  background: #111827 !important;
+  border-color: #374151 !important;
+}
+body.dark-theme #diagnostic-box span {
+  color: #cbd5e1 !important;
+}
+/* --- PRIORITY TAG BADGES --- */
+.priority-tag { display: inline-block; padding: 0.2rem 0.5rem; font-size: 0.7rem; font-weight: bold; border-radius: 4px; text-transform: uppercase; margin-bottom: 0.5rem; }
+.priority-tag.high { background: #fee2e2; color: #ef4444; }
+.priority-tag.medium { background: #fef3c7; color: #d97706; }
+.priority-tag.low { background: #dcfce7; color: #22c55e; }
+
+/* --- DRAG & DROP VISUAL ENGAGEMENT GHOST CORES --- */
+.task-card[draggable="true"] { cursor: grab; }
+.task-card.dragging-active-state { opacity: 0.4; border: 2px dashed var(--primary) !important; transform: scale(0.98); }
+.kanban-col.drag-hover-zone { background: #f1f5f9 !important; border: 2px dashed var(--secondary) !important; }
+
+/* Dark mode configurations for new next-level features */
+body.dark-theme .toolbar-analytics-wrapper input { background: #111827 !important; color: white !important; border-color: #374151 !important; }
+body.dark-theme .chart-container-wrapper { background: #1f2937 !important; border-color: #374151 !important; }
+body.dark-theme .kanban-col.drag-hover-zone { background: #1e293b !important; }
+
+body.dark-theme .priority-tag.high { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+body.dark-theme .priority-tag.medium { background: rgba(217, 119, 6, 0.2); color: #fbbf24; }
+body.dark-theme .priority-tag.low { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+/* ✨ "FOUND IT!" SHIMMER CELEBRATION ANIMATION */
+.task-card.found-shimmer-highlight {
+  animation: taskFoundShine 1.5s ease-in-out;
+  border: 2px solid #3b82f6 !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes taskFoundShine {
+  0% {
+    background-image: linear-gradient(120deg, var(--gray) 0%, var(--gray) 100%);
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
+    border-color: #fbbf24 !important;
+  }
+  50% {
+    background-image: linear-gradient(120deg, rgba(59,130,246,0.1) 0%, rgba(251,191,36,0.2) 50%, rgba(59,130,246,0.1) 100%);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  }
+}
