@@ -1,4 +1,4 @@
-const SERVER_BASE = 'http://localhost:5000';
+const SERVER_BASE = 'https://code-alpha-collaborative-task-management-1yij.onrender.com';
 const API_URL = `${SERVER_BASE}/api`;
 let token = localStorage.getItem('token') || '';
 let activeProjectId = '';

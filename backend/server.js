@@ -11,7 +11,7 @@ const server = http.createServer(app);
 // Initialize Socket.io with dynamic CORS
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://code-alpha-collaborative-task-management.onrender.com",
     methods: ["GET", "POST", "PUT"]
   }
 });
