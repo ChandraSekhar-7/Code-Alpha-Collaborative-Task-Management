@@ -36,6 +36,7 @@ function switchAuthMode(mode) {
   }
 }
 async function submitAuthForm() {
+  console.log('submitAuthForm called');
   const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value.trim();
   
