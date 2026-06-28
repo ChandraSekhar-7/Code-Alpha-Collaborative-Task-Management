@@ -333,7 +333,9 @@ function renderTasksToDOM(tasks) {
   let counts = { Todo: 0, 'In Progress': 0, Done: 0 };
   
   ['Todo', 'In Progress', 'Done'].forEach(lane => {
-    const laneStack = document.querySelector(`#lane-${lane} .task-stack`);
+    const laneId = `lane-${lane.replace(/\s+/g, '-')}`;
+    const laneEl = document.getElementById(laneId);
+    const laneStack = laneEl ? laneEl.querySelector('.task-stack') : null;
     if (laneStack) laneStack.innerHTML = '';
   });
 
@@ -347,7 +349,8 @@ function renderTasksToDOM(tasks) {
 
   tasks.forEach((task, index) => {
     counts[task.status] = (counts[task.status] || 0) + 1;
-    let targetLane = document.querySelector(`#lane-${task.status} .task-stack`);
+    const targetLaneId = `lane-${(task.status || '').replace(/\s+/g, '-')}`;
+    let targetLane = document.getElementById(targetLaneId)?.querySelector('.task-stack');
 
     if (targetLane) {
       const generatedDomCardId = `task-dom-ref-${task._id || index}`;
