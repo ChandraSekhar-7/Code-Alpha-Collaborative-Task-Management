@@ -378,9 +378,9 @@ function renderTasksToDOM(tasks) {
         <p>📝 ${task.description || 'No execution brief provided.'}</p>
         <p><small>🏁 Assignee: <strong>👤 ${task.assignedTo}</strong></small></p>
         <select onchange="dispatchStatusTransition('${task._id}', this.value)" style="margin-top:5px;">
-          <option ${task.status === 'Todo' ? 'selected' : ''}>⏳ Todo</option>
-          <option ${task.status === 'In Progress' ? 'selected' : ''}>⚙️ In Progress</option>
-          <option ${task.status === 'Done' ? 'selected' : ''}>✅ Done</option>
+          <option value="Todo" ${task.status === 'Todo' ? 'selected' : ''}>⏳ Todo</option>
+          <option value="In Progress" ${task.status === 'In Progress' ? 'selected' : ''}>⚙️ In Progress</option>
+          <option value="Done" ${task.status === 'Done' ? 'selected' : ''}>✅ Done</option>
         </select>
         <div class="comment-block">
           <div class="comment-list">${commentsHTML}</div>
@@ -435,13 +435,27 @@ async function createNewTask() {
 }
 
 async function dispatchStatusTransition(taskId, newStatus) {
-  const cleanStatus = newStatus.includes('Todo') ? 'Todo' : newStatus.includes('In Progress') ? 'In Progress' : 'Done';
-  await fetch(`${API_URL}/tasks/${taskId}`, { 
-    method: 'PUT', 
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
-    body: JSON.stringify({ status: cleanStatus }) 
-  });
-  loadProjectTasksEngine();
+  const cleanStatus = typeof newStatus === 'string'
+    ? (newStatus.includes('Todo') ? 'Todo' : newStatus.includes('In Progress') ? 'In Progress' : 'Done')
+    : 'Todo';
+
+  try {
+    const res = await fetch(`${API_URL}/tasks/${taskId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ status: cleanStatus })
+    });
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error('Failed to update task status:', res.status, errBody);
+      alert('Could not update task status. Please ensure you are signed in.');
+      return;
+    }
+    loadProjectTasksEngine();
+  } catch (err) {
+    console.error('Network error updating status:', err);
+    alert('Network error updating task status.');
+  }
 }
 
 async function dispatchComment(taskId, commentText) {
