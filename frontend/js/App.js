@@ -164,7 +164,9 @@ async function syncProjectsList() {
   try {
     const res = await fetch(`${API_URL}/projects`, { headers: { 'Authorization': `Bearer ${token}` } });
     const userProjects = await res.json();
-    
+    // Cache projects locally so UI can recover when a refresh breaks network access
+    try { localStorage.setItem('cachedProjects', JSON.stringify(userProjects || [])); } catch (e) {}
+
     userProjects.forEach(p => {
       const li = document.createElement('li');
       li.innerText = `📁 ${p.name}`;
@@ -173,7 +175,23 @@ async function syncProjectsList() {
       container.appendChild(li);
     });
   } catch (err) {
-    console.error(err);
+    console.error('Failed to load projects from API:', err);
+    // Try loading cached projects so the UI still shows something after refresh
+    const cached = localStorage.getItem('cachedProjects');
+    if (cached) {
+      try {
+        const cachedProjects = JSON.parse(cached);
+        cachedProjects.forEach(p => {
+          const li = document.createElement('li');
+          li.innerText = `📁 ${p.name}`;
+          li.className = 'demo-badge';
+          li.onclick = () => mountProjectBoard(p._id, `📁 ${p.name}`);
+          container.appendChild(li);
+        });
+        return;
+      } catch (e) { console.error('Invalid cached projects', e); }
+    }
+    container.innerHTML = '<li style="color:var(--secondary);">Could not load projects — please sign in or check the server.</li>';
   }
 }
 
