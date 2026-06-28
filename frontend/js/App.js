@@ -481,3 +481,6 @@ function wipeLocalWorkspaceCache() {
     localStorage.clear(); window.location.reload();
   }
 }
+
+// Ensure functions used by inline `onclick` attributes are available globally
+window.submitAuthForm = submitAuthForm;
